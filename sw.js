@@ -1,5 +1,5 @@
 // Network-first cache: always fresh when online, still works offline.
-const CACHE = 'panfit-v2';
+const CACHE = 'panfit-v3';
 const ASSETS = [
   './', 'index.html', 'style.css', 'app.js',
   'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png',

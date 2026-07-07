@@ -286,12 +286,38 @@ function sampleBackground() {
   state.bg = { r: median(rs), g: median(gs), b: median(bs) };
 }
 
+// Segmentation methods: each takes the board colour and returns a per-pixel
+// squared "distance from board" comparable against the sensitivity slider.
+// rgb    — plain distance in RGB space; sharp, but shadows on the board score high.
+// chroma — distance between colour proportions (brightness cancelled out), so
+//          shadows score ~0; weak for food that differs from the board only in
+//          brightness. The 765 factor keeps the numbers on the slider's scale.
+const SEGMENTERS = {
+  rgb(bg) {
+    const { r: br, g: bgc, b: bb } = bg;
+    return (r, g, b) => {
+      const dr = r - br, dg = g - bgc, db = b - bb;
+      return dr * dr + dg * dg + db * db;
+    };
+  },
+  chroma(bg) {
+    const s0 = bg.r + bg.g + bg.b || 1;
+    const cr0 = 765 * bg.r / s0, cg0 = 765 * bg.g / s0;
+    return (r, g, b) => {
+      const s = r + g + b || 1;
+      const dr = 765 * r / s - cr0, dg = 765 * g / s - cg0;
+      return dr * dr + dg * dg;
+    };
+  },
+};
+
 function detect() {
   const { width: W, height: H } = state.rect;
   const d = state.rectData.data;
   const n = W * H;
   const t = +$('sens').value, t2 = t * t;
-  const { r: br, g: bg, b: bb } = state.bg;
+  const method = SEGMENTERS[store.read('seg', 'rgb')] || SEGMENTERS.rgb;
+  const dist = method(state.bg);
 
   // In round mode only pixels on the plate count; 0.98 keeps the rim edge out.
   const cx = W / 2, cy = H / 2, r2 = (0.98 * W / 2) ** 2;
@@ -299,8 +325,7 @@ function detect() {
   for (let y = 0, i = 0, p = 0; y < H; y++) {
     for (let x = 0; x < W; x++, i++, p += 4) {
       if (state.round && (x - cx) ** 2 + (y - cy) ** 2 > r2) continue;
-      const dr = d[p] - br, dg = d[p + 1] - bg, db = d[p + 2] - bb;
-      if (dr * dr + dg * dg + db * db > t2) mask[i] = 1;
+      if (dist(d[p], d[p + 1], d[p + 2]) > t2) mask[i] = 1;
     }
   }
 
@@ -402,6 +427,9 @@ $('review-canvas').addEventListener('pointerdown', e => {
 });
 
 $('sens').addEventListener('input', () => { detect(); renderReview(); });
+for (const r of document.querySelectorAll('input[name=seg]')) {
+  r.addEventListener('change', () => { store.write('seg', r.value); detect(); renderReview(); });
+}
 $('review-back').onclick = () => { state.corners = []; drawCorners(); show('step-corners'); };
 $('to-pans').onclick = () => { renderVerdict(); show('step-pans'); };
 
@@ -525,6 +553,8 @@ function init() {
   const f = store.read('factor', 70);
   $('factor').value = f;
   $('factor-val').textContent = `${f} %`;
+  const seg = document.querySelector(`input[name=seg][value=${store.read('seg', 'rgb')}]`);
+  if (seg) seg.checked = true;
   renderPans();
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     navigator.serviceWorker.register('sw.js');

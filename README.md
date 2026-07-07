@@ -22,8 +22,9 @@ A measurement session takes under a minute:
 3. Take a photo from roughly above.
 4. Tap four reference points on the photo: the corners of a rectangular board, or
    the top/right/bottom/left rim points of a round one.
-5. Review the highlighted pieces. The sensitivity slider adjusts detection; tapping
-   a piece includes or excludes it.
+5. Review the highlighted pieces. The sensitivity slider adjusts detection, a
+   toggle switches between two detection methods (compare them live on the same
+   photo), and tapping a piece includes or excludes it.
 6. Read the verdict: your saved pans and pan pairs, ranked by fewest frying rounds.
 
 Pans (name + diameter) are saved on the device, so they are entered only once.
@@ -70,10 +71,14 @@ The measurement pipeline in `app.js`:
    unchanged.
 2. **Detect** — the board's colour is estimated as the per-channel median of a thin
    band where food rarely sits (the border of a rectangular board, an annulus just
-   inside a round rim). Pixels far from that colour in RGB distance count as food;
-   the sensitivity slider is that distance threshold. In round mode, pixels outside
-   the plate are ignored entirely. Connected components (flood fill) split the mask
-   into pieces; blobs under 0.35 cm² are dropped as noise.
+   inside a round rim). Pixels far from that colour count as food; the sensitivity
+   slider is the distance threshold, and two switchable distance metrics are
+   provided: plain **RGB distance** (sharp, but board shadows score high) and
+   **chroma distance**, which compares colour proportions with brightness cancelled
+   out (shadows score ~0, but food differing from the board only in brightness is
+   missed). In round mode, pixels outside the plate are ignored entirely. Connected
+   components (flood fill) split the mask into pieces; blobs under 0.35 cm² are
+   dropped as noise.
 3. **Verdict** — a pan of diameter *d* holds `packing × π(d/2)²` of food area,
    where *packing* (default 70 %) accounts for the gaps irregular pieces leave.
    Every pan and every pair of pans is scored by rounds needed,

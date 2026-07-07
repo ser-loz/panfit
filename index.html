@@ -52,6 +52,10 @@
     <section id="step-review" class="step" hidden>
       <h2>3 · Detected pieces</h2>
       <canvas id="review-canvas"></canvas>
+      <fieldset id="seg">
+        <label class="radio"><input type="radio" name="seg" value="rgb" checked> Color distance</label>
+        <label class="radio"><input type="radio" name="seg" value="chroma"> Chroma (ignores shadows)</label>
+      </fieldset>
       <label>Sensitivity
         <input id="sens" type="range" min="15" max="140" value="60">
       </label>
