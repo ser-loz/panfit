@@ -33,10 +33,9 @@ Pans (name + diameter) are saved on the device, so they are entered only once.
 The app is static files; any HTTPS static host serves it as-is — there is nothing
 to build.
 
-- **GitLab Pages** — the included [`.gitlab-ci.yml`](.gitlab-ci.yml) publishes
-  automatically on every push to the default branch. The app appears at
-  `https://<namespace>.gitlab.io/<project>/` (exact URL under
-  **Deploy → Pages** in the project).
+- **GitHub Pages** — enable once in the repository settings (**Settings → Pages →
+  Deploy from a branch → `main`, `/ (root)`**); every push then republishes the
+  app at `https://<username>.github.io/<repository>/`.
 - **Anywhere else** — copy `index.html`, `style.css`, `app.js`, `sw.js`,
   `manifest.webmanifest`, and `icons/` to any web root.
 
@@ -58,7 +57,6 @@ fresh files.
 | `style.css` | Dark, mobile-first styling |
 | `sw.js` | Service worker: network-first cache for offline use |
 | `manifest.webmanifest` | Home-screen installation metadata |
-| `.gitlab-ci.yml` | GitLab Pages deployment |
 
 The measurement pipeline in `app.js`:
 
