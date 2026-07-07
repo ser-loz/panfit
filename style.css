@@ -9,6 +9,10 @@
 
 * { box-sizing: border-box; }
 
+/* Author display rules (label, .radio, …) would otherwise override the
+   UA stylesheet that makes the hidden attribute work. */
+[hidden] { display: none !important; }
+
 body {
   margin: 0 auto;
   padding: 20px 16px 48px;
