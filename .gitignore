@@ -1,0 +1,8 @@
+# OS artifacts
+Thumbs.db
+.DS_Store
+
+# Editor / tooling
+.claude/
+.vscode/
+*.log

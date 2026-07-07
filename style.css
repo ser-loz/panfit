@@ -1,0 +1,107 @@
+:root {
+  --bg: #1c1917;
+  --card: #292524;
+  --line: #44403c;
+  --text: #e7e5e4;
+  --dim: #a8a29e;
+  --accent: #f97316;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0 auto;
+  padding: 20px 16px 48px;
+  max-width: 560px;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 system-ui, sans-serif;
+}
+
+header { margin-bottom: 20px; }
+h1 { margin: 0; font-size: 26px; }
+h2 { margin: 0 0 12px; font-size: 19px; }
+h3 { margin: 20px 0 8px; font-size: 16px; }
+
+.hint { margin: 8px 0; color: var(--dim); font-size: 14px; }
+.big { font-size: 18px; font-weight: 600; }
+
+label { display: block; margin: 12px 0; }
+
+fieldset { margin: 12px 0; padding: 0; border: none; }
+.radio { display: inline-flex; gap: 8px; margin: 0 20px 0 0; align-items: center; }
+input[type=radio] { accent-color: var(--accent); width: 18px; height: 18px; }
+
+input[type=number], input[type=text] {
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px 12px;
+  font-size: 16px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+input[type=range] { width: 100%; accent-color: var(--accent); }
+
+button, .btn {
+  display: inline-block;
+  padding: 12px 18px;
+  font-size: 16px;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1c1917;
+  font-weight: 700;
+}
+
+.file-btn { width: 100%; margin-top: 16px; text-align: center; }
+
+canvas {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  touch-action: manipulation;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  justify-content: space-between;
+}
+
+#pan-list { margin: 0; padding: 0; list-style: none; }
+#pan-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 8px 8px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.del { padding: 6px 12px; border: none; background: none; color: var(--dim); }
+
+#pan-form { display: flex; gap: 8px; align-items: flex-end; }
+#pan-form label { flex: 1; margin: 0; }
+#pan-form .d { flex: 0 0 96px; }
+
+.option {
+  margin: 8px 0;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.option.best { border-color: var(--accent); }

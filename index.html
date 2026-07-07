@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>PanFit</title>
+  <meta name="theme-color" content="#1c1917">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🍳 PanFit</h1>
+    <p class="hint">Will the food fit in the pan?</p>
+  </header>
+  <main>
+
+    <section id="step-photo" class="step">
+      <h2>1 · Board &amp; photo</h2>
+      <fieldset id="shape">
+        <label class="radio"><input type="radio" name="shape" value="rect" checked> Rectangular board</label>
+        <label class="radio"><input type="radio" name="shape" value="round"> Round board or plate</label>
+      </fieldset>
+      <label id="wrap-w">Board width (cm)
+        <input id="board-w" type="number" min="1" step="0.5" inputmode="decimal" placeholder="e.g. 40">
+      </label>
+      <label id="wrap-h">Board height (cm)
+        <input id="board-h" type="number" min="1" step="0.5" inputmode="decimal" placeholder="e.g. 30">
+      </label>
+      <label id="wrap-d" hidden>Diameter (cm)
+        <input id="board-d" type="number" min="1" step="0.5" inputmode="decimal" placeholder="e.g. 26">
+      </label>
+      <p class="hint">Spread the cut food on a board or plate of known size — single layer, pieces
+        not touching. For a rectangular board, width is the edge that runs left–right in your
+        photo. Shoot from as straight above as you can.</p>
+      <label class="btn primary file-btn">📷 Take photo
+        <input id="photo-input" type="file" accept="image/*" capture="environment" hidden>
+      </label>
+    </section>
+
+    <section id="step-corners" class="step" hidden>
+      <h2>2 · Mark the board</h2>
+      <p id="corner-prompt"></p>
+      <canvas id="corner-canvas"></canvas>
+      <div class="row">
+        <button id="corner-back">← Back</button>
+        <button id="corner-undo">Undo tap</button>
+      </div>
+    </section>
+
+    <section id="step-review" class="step" hidden>
+      <h2>3 · Detected pieces</h2>
+      <canvas id="review-canvas"></canvas>
+      <label>Sensitivity
+        <input id="sens" type="range" min="15" max="140" value="60">
+      </label>
+      <p class="hint">Highlighted areas count as food (numbers are cm²). Tap a piece to
+        include/exclude it. Move the slider if pieces are missed or the board itself gets
+        picked up.</p>
+      <p id="total-area" class="big"></p>
+      <div class="row">
+        <button id="review-back">← Corners</button>
+        <button id="to-pans" class="primary">Pick a pan →</button>
+      </div>
+    </section>
+
+    <section id="step-pans" class="step" hidden>
+      <h2>4 · Verdict</h2>
+      <div id="verdict"></div>
+      <h3>Your pans</h3>
+      <ul id="pan-list"></ul>
+      <form id="pan-form">
+        <label>Name <input id="pan-name" type="text" placeholder="Big skillet"></label>
+        <label class="d">⌀ cm <input id="pan-d" type="number" min="1" step="0.5" inputmode="decimal" required></label>
+        <button class="primary" type="submit">Add</button>
+      </form>
+      <label>Packing efficiency <span id="factor-val"></span>
+        <input id="factor" type="range" min="50" max="90" value="70">
+      </label>
+      <p class="hint">How densely irregular pieces really pack in a round pan. 70&nbsp;% is a good
+        default; lower it for awkward shapes that need space between them.</p>
+      <div class="row">
+        <button id="pans-back">← Pieces</button>
+        <button id="restart">Start over</button>
+      </div>
+    </section>
+
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
